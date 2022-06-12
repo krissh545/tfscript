@@ -1,0 +1,87 @@
+provider block
+provider "google" {
+    credentials        = file("bhavitfsa.json")
+    project            = var.projectid
+  
+}
+
+resource block
+
+resource "google_compute_network" "my-network" {
+
+name                             = var.networkname
+auto_create_subnetworks          = var.autocreate
+routing_mode                     = var.routemode
+mtu                              = var.mtu
+  
+}
+
+
+resource "google_compute_subnetwork" "my-subnetwork" {
+    count = length(var.subnetname)
+    name                        = var.subnetname[count.index]
+    network                     = google_compute_network.my-network.id
+    ip_cidr_range               = var.range[count.index]
+    region                      = var.region
+  
+}
+
+variable.tf block
+
+variable "projectid" {
+    type = string   
+    default = "bhavaniraining"
+  
+}
+
+variable "networkname" {
+    type = string   
+    default = "vpc-tfscript"
+  
+}
+
+variable "autocreate" {
+    type = bool   
+    default = "false"
+  
+}
+
+variable "routemode" {
+    type = string   
+    default = "GLOBAL"
+  
+}
+
+variable "mtu" {
+    type = number  
+    default = "1460"
+  
+}
+
+variable "subnetname" {
+    type = list(string)   
+    default = ["subnet111","subnet222","subnet333"]
+  
+}
+
+variable "range" {
+    type = list(string)  
+    default = ["10.15.0.0/24","10.15.1.0/24","10.15.2.0/24"]
+  
+}
+
+
+variable "region" {
+    type = string   
+    default = "asia-east1"
+  
+}
+
+variables.tfvars block
+
+networkname              = "vpc-bhavi-terraform"
+autocreate               = "false"
+routemode                = "GLOBAL"
+subnetname               = ["subnet0011","subnet002","subnet003","subnet004"]
+range                    = ["10.11.0.0/24","10.11.1.0/24","10.11.2.0/24","10.11.3.0/24"]
+region                   = "asia-northeast1"
